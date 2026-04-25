@@ -1,0 +1,12 @@
+.vs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+cv_profile.json
+ANKUR_RAY_CV_2026.pdf
+
+.DS_Store
+Thumbs.db
