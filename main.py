@@ -9,10 +9,10 @@ def run():
     try:
         print("📥 Fetching jobs...")
         df = fetch_jobs()
-        print(f"Total jobs fetched: {len(df)}")
 
         print("🔍 Filtering jobs...")
         jobs = filter_jobs(df)
+
         print(f"✅ Jobs matched: {len(jobs)}")
 
         if len(jobs) == 0:
@@ -22,7 +22,7 @@ def run():
         print("📤 Sending email...")
         send_email(jobs)
 
-        print("🎉 Done! Email sent successfully.")
+        print("🎉 Done!")
 
     except Exception as e:
         print("❌ Error occurred:", e)

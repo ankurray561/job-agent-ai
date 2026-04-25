@@ -1,8 +1,18 @@
 import smtplib
 from email.mime.text import MIMEText
+import os
 
 
 def send_email(jobs):
+    # Get email configuration from environment variables
+    email_from = os.environ.get("EMAIL_FROM")
+    email_to = os.environ.get("EMAIL_TO")
+    email_user = os.environ.get("EMAIL_USER")
+    email_app_password = os.environ.get("EMAIL_APP_PASSWORD")
+    
+    if not all([email_from, email_to, email_user, email_app_password]):
+        raise ValueError("Missing email configuration. Please set EMAIL_FROM, EMAIL_TO, EMAIL_USER, and EMAIL_APP_PASSWORD environment variables.")
+    
     html = """
     <html>
     <body style="font-family: Arial; background:#f4f6f8; padding:20px;">
@@ -30,12 +40,12 @@ def send_email(jobs):
 
     msg = MIMEText(html, "html")
     msg["Subject"] = "🚀 Your Product Job Matches"
-    msg["From"] = "ankurray561@gmail.com"
-    msg["To"] = "john.ankur.ray@gmail.com"
+    msg["From"] = email_from
+    msg["To"] = email_to
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login("ankurray561@gmail.com", "lupwsqdhzlyuuzml")  # 👈 put your app password
+    server.login(email_user, email_app_password)
 
     print("📤 Sending email...")
     server.send_message(msg)

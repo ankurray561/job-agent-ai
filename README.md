@@ -79,10 +79,21 @@ Define your job preferences:
 ```
 
 ### Email Configuration (`send_email.py`)
-Update these values:
-- `msg["From"]`: Your Gmail address (sender)
-- `msg["To"]`: Recipient email address
-- `server.login("email_A", "YOUR_APP_PASSWORD")`: Use Gmail App Password
+Set these environment variables before running the script:
+
+```bash
+export EMAIL_FROM="your-email@gmail.com"
+export EMAIL_TO="recipient@example.com"
+export EMAIL_USER="your-email@gmail.com"
+export EMAIL_APP_PASSWORD="your-gmail-app-password"
+```
+
+- `EMAIL_FROM`: Your Gmail address (sender email in the email)
+- `EMAIL_TO`: Recipient email address
+- `EMAIL_USER`: Your Gmail address (username for SMTP login)
+- `EMAIL_APP_PASSWORD`: Your Gmail App Password (not your regular password)
+
+**Security Note**: Never hardcode credentials in the source code. Use environment variables or a secure secrets manager.
 
 ## 🚀 Getting Started
 
@@ -203,7 +214,7 @@ flowchart TD
 - APIs integrated:
   - Remotive: `https://remotive.com/api/remote-jobs`
   - Arbeitnow: `https://www.arbeitnow.com/api/job-board-api`
-- Error handling: Try-catch per API, prints errors but continues
+- Error handling: Try-catch per API, prints errors but continues; HTTP errors raise exceptions before JSON parsing
 - Data structure: Dict with keys: title, company, location, description, url
 
 **Inputs**: None (API endpoints hardcoded)
@@ -227,7 +238,7 @@ flowchart TD
 - Filtering logic:
   - Role filter: Must contain target roles in title
   - Exclusion filter: Skip if contains exclude keywords
-- Configuration loaded from `cv_profile.json`
+- Configuration loaded from `cv_profile.json` with case normalization
 - Processes DataFrame row-by-row for memory efficiency
 
 **Inputs**: Job DataFrame, CV Profile JSON
@@ -245,9 +256,9 @@ flowchart TD
 **Technical Details**:
 - Uses `smtplib` for SMTP communication
 - HTML template with inline CSS for cross-client compatibility
-- Authentication: Gmail App Password required
+- Authentication: Gmail App Password required (read from environment variables)
 - Email structure: Subject, HTML body with job cards
-- Security: TLS encryption enabled
+- Security: TLS encryption enabled, credentials loaded from secure env vars
 
 **Inputs**: List of matched jobs
 **Outputs**: Email sent to configured recipient
